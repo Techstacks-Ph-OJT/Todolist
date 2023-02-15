@@ -7,7 +7,6 @@ function App() {
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState('');
   const [editTask, setEditTask] = useState('');
-  const [editing, setEditing] = useState(false);
 
   const addTask = () => {
     const task = {
@@ -51,7 +50,6 @@ function App() {
 
 
   const editTaskHandler = (taskToEdit) => {
-    setEditing(true);
     setEditTask(taskToEdit);
     setNewTask(taskToEdit.name);
   };
@@ -62,16 +60,18 @@ function App() {
         task === editTask ? { ...task, name: newTask } : task
       )
     );
-    setEditing(false);
     setEditTask('');
     setNewTask('');
   };
 
   const cancelEdit = () => {
-    setEditing(false);
     setEditTask('');
     setNewTask('');
   };
+
+  const alertAdd = () => {
+    alert('Enter a Task first')
+  }
 
   return (
     <div className='todo-list-container'>
@@ -82,11 +82,11 @@ function App() {
           value={newTask}
           onChange={(e) => setNewTask(e.target.value)}
         />
-        <button onClick={addTask}>Add Task</button>
+        {newTask === '' ? (<button onClick={alertAdd}>Add Task</button>) : (<button onClick={addTask}>Add Task</button>)}
       </div>
       {tasks.map((task) => (
         <div key={task.name}>
-          {editing && editTask === task ? (
+          {editTask === task ? (
             <div>
               <input
                 type='text'
